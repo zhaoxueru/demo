@@ -18,13 +18,15 @@
  * 4. Get the differences
  *
  * The demo url is in loose style, which means all data-structure matched methods will be calling
- * If you want to try strict style, visit the example url bellow with GET enabled: (Remember the change host_address to your own ip/host)
+ * If you want to try strict style, visit the example urls bellow with GET enabled: (Remember the change host_address to your own ip/host)
  *
+ * http://host_address/api.php?format=json&cmd=fruit_picker/picker,color,smell,guess&color=yellow&smell=sweet
  * http://host_address/api.php?format=json&cmd=fruit_picker/picker,color,smell,shape,guess&color=yellow&smell=sweet&shape=pear
  *
  * You can also modified the original data and the request url, whatever. Do it as your own.
  * You can link the module to your database or other modules to finish huge project as also.
  */
+
 //The class name should be exactly the same as its file name
 class picker
 {
