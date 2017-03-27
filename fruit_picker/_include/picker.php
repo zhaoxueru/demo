@@ -26,7 +26,6 @@
  * You can also modified the original data and the request url, whatever. Do it as your own.
  * You can link the module to your database or other modules to finish huge project as also.
  */
-
 //The class name should be exactly the same as its file name
 class picker
 {
@@ -274,7 +273,7 @@ class picker
         foreach (self::$result as $value) $wanted = array_intersect($wanted, $value);
 
         //You can show the guessed result data via var_dump here
-        var_dump($wanted);
+        //var_dump($wanted);
 
         //Return the result
         return $wanted;
