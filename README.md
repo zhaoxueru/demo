@@ -1,2 +1,2 @@
-# fruit_picker
+# fruit
 A simple demo module for NervSys
