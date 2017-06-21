@@ -12,21 +12,25 @@
  * 1. Turn ENABLE_GET to true for better controlling via url GET. You can use POST also and don't need to turn it to true.
  * Go to your server via the example url bellow: (Remember the change host_address to your own ip/host)
  *
- * 2. Visit http://host_address/api.php?format=json&cmd=fruit/picker&color=yellow&smell=sweet
- * 3. Visit http://host_address/api.php?format=json&cmd=fruit/picker&color=yellow&smell=sweet&shape=pear
+ * 2. Visit http://host_address/api.php?format=json&cmd=fruit\picker&color=yellow&smell=sweet
+ * 3. Visit http://host_address/api.php?format=json&cmd=fruit\picker&color=yellow&smell=sweet&shape=pear
  *
  * 4. Get the differences
  *
  * The demo url is in loose style, which means all data-structure matched methods will be calling
  * If you want to try strict style, visit the example urls bellow with GET enabled: (Remember the change host_address to your own ip/host)
  *
- * http://host_address/api.php?format=json&cmd=fruit/picker,color,smell,guess&color=yellow&smell=sweet
- * http://host_address/api.php?format=json&cmd=fruit/picker,color,smell,shape,guess&color=yellow&smell=sweet&shape=pear
+ * http://host_address/api.php?format=json&cmd=fruit\picker,color,smell,guess&color=yellow&smell=sweet
+ * http://host_address/api.php?format=json&cmd=fruit\picker,color,smell,shape,guess&color=yellow&smell=sweet&shape=pear
  *
  * You can also modified the original data and the request url, whatever. Do it as your own.
  * You can link the module to your database or other modules to finish huge project as also.
  */
 //The class name should be exactly the same as its file name
+namespace fruit;
+
+use \core\ctrl\pool as data_pool;
+
 class picker
 {
     //All variables should be static and use them as usual
@@ -152,7 +156,8 @@ class picker
         'taste' => ['taste'],
         'shape' => ['shape'],
         'smell' => ['smell'],
-        'guess' => []//This method needs no data, leave an empty array here to allow it to be calling
+        'guess' => []
+        //This method needs no data, leave an empty array here to allow it to be calling
     ];
 
     //Store the result for every method
@@ -170,8 +175,6 @@ class picker
      */
     public static function init()
     {
-        //Load the data_pool module as we need it, or, just ignore it because the api also loaded it.
-        load_lib('core', 'data_pool');
 
         //We actually know the format we need, so, do it
         //Make a copy of original data
