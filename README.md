@@ -1,10 +1,9 @@
 # fruit
 A simple demo module for NervSys
 
-picker_1.php is a Namespace demo example
-picker_2.php is a Non-Namespace demo example
-
-
+ * picker_1.php is a Namespace demo example
+ * picker_2.php is a Non-Namespace demo example
+ *
  * This is an example demo module for NervSys
  * It'll be showing you how to call methods atomically
  * As for a demo module, all needed comments will be written.
