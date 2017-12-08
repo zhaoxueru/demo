@@ -65,89 +65,88 @@ class fruit
      *
      * In case of letting more people to know the name, we made the fruit names translated to Chinese
      */
-    const fruits
-        = [
-            [
-                'name'  => 'apple 苹果',
-                'color' => 'red',
-                'size'  => 'small',
-                'taste' => 'sweet',
-                'shape' => 'round',
-                'smell' => 'sweet'
-            ],
-            [
-                'name'  => 'pear 梨',
-                'color' => 'yellow',
-                'size'  => 'small',
-                'taste' => 'sweet',
-                'shape' => 'pear',
-                'smell' => 'sweet'
-            ],
-            [
-                'name'  => 'banana 香蕉',
-                'color' => 'yellow',
-                'size'  => 'small',
-                'taste' => 'sweet',
-                'shape' => 'bar',
-                'smell' => 'sweet'
-            ],
-            [
-                'name'  => 'watermelon 西瓜',
-                'color' => 'green',
-                'size'  => 'big',
-                'taste' => 'sweet',
-                'shape' => 'round',
-                'smell' => 'none'
-            ],
-            [
-                'name'  => 'mango 芒果',
-                'color' => 'yellow',
-                'size'  => 'small',
-                'taste' => 'sweet',
-                'shape' => 'round',
-                'smell' => 'sweet'
-            ],
-            [
-                'name'  => 'orange 桔子',
-                'color' => 'yellow',
-                'size'  => 'small',
-                'taste' => 'acidity',
-                'shape' => 'round',
-                'smell' => 'acidity'
-            ],
-            [
-                'name'  => 'pineapple 菠萝',
-                'color' => 'yellow',
-                'size'  => 'medium',
-                'taste' => 'acidity',
-                'shape' => 'round',
-                'smell' => 'acidity'
-            ],
-            [
-                'name'  => 'tomato 西红柿',
-                'color' => 'red',
-                'size'  => 'small',
-                'taste' => 'acidity',
-                'shape' => 'round',
-                'smell' => 'none'
-            ],
-            [
-                'name'  => 'grape 葡萄',
-                'color' => 'purple',
-                'size'  => 'tiny',
-                'taste' => 'sweet',
-                'shape' => 'round',
-                'smell' => 'none'
-            ],
-            [
-                'name'  => 'avocado 牛油果',
-                'color' => 'green',
-                'size'  => 'small',
-                'taste' => 'none',
-                'shape' => 'round',
-                'smell' => 'none'
-            ]
-        ];
+    const fruits = [
+        [
+            'name'  => 'apple 苹果',
+            'color' => 'red',
+            'size'  => 'small',
+            'taste' => 'sweet',
+            'shape' => 'round',
+            'smell' => 'sweet'
+        ],
+        [
+            'name'  => 'pear 梨',
+            'color' => 'yellow',
+            'size'  => 'small',
+            'taste' => 'sweet',
+            'shape' => 'pear',
+            'smell' => 'sweet'
+        ],
+        [
+            'name'  => 'banana 香蕉',
+            'color' => 'yellow',
+            'size'  => 'small',
+            'taste' => 'sweet',
+            'shape' => 'bar',
+            'smell' => 'sweet'
+        ],
+        [
+            'name'  => 'watermelon 西瓜',
+            'color' => 'green',
+            'size'  => 'big',
+            'taste' => 'sweet',
+            'shape' => 'round',
+            'smell' => 'none'
+        ],
+        [
+            'name'  => 'mango 芒果',
+            'color' => 'yellow',
+            'size'  => 'small',
+            'taste' => 'sweet',
+            'shape' => 'round',
+            'smell' => 'sweet'
+        ],
+        [
+            'name'  => 'orange 桔子',
+            'color' => 'yellow',
+            'size'  => 'small',
+            'taste' => 'acidity',
+            'shape' => 'round',
+            'smell' => 'acidity'
+        ],
+        [
+            'name'  => 'pineapple 菠萝',
+            'color' => 'yellow',
+            'size'  => 'medium',
+            'taste' => 'acidity',
+            'shape' => 'round',
+            'smell' => 'acidity'
+        ],
+        [
+            'name'  => 'tomato 西红柿',
+            'color' => 'red',
+            'size'  => 'small',
+            'taste' => 'acidity',
+            'shape' => 'round',
+            'smell' => 'none'
+        ],
+        [
+            'name'  => 'grape 葡萄',
+            'color' => 'purple',
+            'size'  => 'tiny',
+            'taste' => 'sweet',
+            'shape' => 'round',
+            'smell' => 'none'
+        ],
+        [
+            'name'  => 'avocado 牛油果',
+            'color' => 'green',
+            'size'  => 'small',
+            'taste' => 'none',
+            'shape' => 'round',
+            'smell' => 'none'
+        ]
+    ];
 
     //Use to store the data of the correct format
     private static $data   = [];
@@ -162,17 +161,16 @@ class fruit
      *
      * @var array
      */
-    public static $key
-        = [
-            'test'  => [],
-            'color' => ['color'],
-            'size'  => ['size'],
-            'taste' => ['taste'],
-            'shape' => ['shape'],
-            'smell' => ['smell'],
-            'guess' => []
-            //This method needs no data, leave an empty array here to allow it to be calling
-        ];
+    public static $key = [
+        'sock'  => [],
+        'color' => ['color'],
+        'size'  => ['size'],
+        'taste' => ['taste'],
+        'shape' => ['shape'],
+        'smell' => ['smell'],
+        'guess' => []
+        //This method needs no data, leave an empty array here to allow it to be calling
+    ];
 
     //Store the result for every method
     private static $result = [];
