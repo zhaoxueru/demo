@@ -18,18 +18,18 @@ class server
      * @var array
      */
     public static $key = [
-        'tcp_start'  => [],
-        'udp_start'  => [],
-        'http_start' => [],
-        'tcp_send'   => [],
-        'udp_send'   => []
+        'tcp_server'  => [],
+        'udp_server'  => [],
+        'http_server' => [],
+        'tcp_send'    => [],
+        'udp_send'    => []
     ];
 
     /**
      * TCP Server
-     * run with cmd: "php api.php demo/socket/server-tcp_start"
+     * run with cmd: "php api.php demo/socket/server-tcp_server"
      */
-    public static function tcp_start(): void
+    public static function tcp_server(): void
     {
         sock::$type = 'tcp:server';
         sock::$host = '0.0.0.0';
@@ -64,7 +64,17 @@ class server
                 //Client socket resource
                 $data[$key]['sock'] = $client[$key];
                 //Message to be sent
-                $data[$key]['msg'] = $value['msg'];
+                $data[$key]['msg'] = 'Hello, dear sender!';
+                $data[$key]['msg'] .= PHP_EOL;
+                $data[$key]['msg'] .= 'I received your message, and now send it back.';
+                $data[$key]['msg'] .= PHP_EOL . PHP_EOL;
+                $data[$key]['msg'] .= '====================================================================';
+                $data[$key]['msg'] .= PHP_EOL . PHP_EOL;
+                $data[$key]['msg'] .= $value['msg'];
+                $data[$key]['msg'] .= PHP_EOL . PHP_EOL;
+                $data[$key]['msg'] .= '====================================================================';
+                $data[$key]['msg'] .= PHP_EOL . PHP_EOL;
+                $data[$key]['msg'] .= 'Thanks for your test!';
             }
 
             //Send data back and maintain clients
@@ -77,9 +87,9 @@ class server
 
     /**
      * UDP Server
-     * run with cmd: "php api.php demo/socket/server-udp_start"
+     * run with cmd: "php api.php demo/socket/server-udp_server"
      */
-    public static function udp_start(): void
+    public static function udp_server(): void
     {
         sock::$type = 'udp:server';
         sock::$host = '0.0.0.0';
@@ -105,9 +115,9 @@ class server
 
     /**
      * HTTP Server
-     * run with cmd: "php api.php demo/socket/server-http_start"
+     * run with cmd: "php api.php demo/socket/server-http_server"
      */
-    public static function http_start(): void
+    public static function http_server(): void
     {
         sock::$type = 'http:server';
         sock::$host = '0.0.0.0';
@@ -117,8 +127,8 @@ class server
         if (!$ok) exit('HTTP Server creation failed!');
 
         do {
-            //Reset all clients
-            $read = $client = [];
+            //IMPORTANT!!! Reset all data & read list & client list
+            $data = $read = $client = [];
 
             //Accept new connection
             sock::accept($read, $client);
@@ -128,12 +138,22 @@ class server
 
             var_dump($msg);
 
-            //Simply send to browser
-            $data[0]['sock'] = current($client);
-            $data[0]['msg'] = 'Hello World! I am a simple HTTP Server build by PHP~';
+            //Prepare simple data
+            $key = key($client);
+            $sock = current($client);
 
-            //Send data to client
-            $result = sock::write($data);
+            $data[$key]['sock'] = $sock;
+
+            $data[$key]['msg'] = 'Hello! I am a simple HTTP Server running under PHP~';
+            $data[$key]['msg'] .= PHP_EOL . PHP_EOL;
+            $data[$key]['msg'] .= 'Your request message was: ';
+            $data[$key]['msg'] .= PHP_EOL . PHP_EOL;
+            $data[$key]['msg'] .= trim(current($msg)['msg']);
+            $data[$key]['msg'] .= PHP_EOL . PHP_EOL;
+            $data[$key]['msg'] .= 'Thanks for your test!';
+
+            //Send to browser
+            $result = sock::write($data, $client);
 
             var_dump($result);
 
@@ -174,6 +194,9 @@ class server
         $result = sock::write($data);
 
         var_dump($result);
+
+        //Listen to TCP port
+        sock::listen();
 
         //Read data from server
         $msg = sock::read();
