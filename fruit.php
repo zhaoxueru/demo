@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class picker
+ * Fruit Demo
  *
  * This is an example demo module for NervSys
  * It'll be showing you how to call methods atomically
@@ -44,30 +44,18 @@ use \core\ctr\router as router;
 //The class name should be exactly the same as the file name
 class fruit
 {
-    //All variables should be static and use them as usual
-    public static    $data_1;
-    protected static $data_2;
-    private static   $data_3;
-
-    //Use const data as usual
-    const data_4 = [];
-
-    //Above are examples, not for use
-
     /**
      * I declare a list of fruits with some properties using const,
-     * the structure is like the data just out of the db
+     * the structure is like the data just out of the DB
      * And we need to make the property list simple, so that,
      * we suppose that, every property of a fruit only contains one value.
      * And the properties should all cross to each other's to make better sense.
      * Don't make strange properties, or, that'll make the simple demo too complex, though it can be done also.
      * That means, apple can be both green and red, but, we only take red as its color property
-     *
-     * In case of letting more people to know the name, we made the fruit names translated to Chinese
      */
     const fruits = [
         [
-            'name'  => 'apple 苹果',
+            'name'  => 'apple',
             'color' => 'red',
             'size'  => 'small',
             'taste' => 'sweet',
@@ -75,7 +63,7 @@ class fruit
             'smell' => 'sweet'
         ],
         [
-            'name'  => 'pear 梨',
+            'name'  => 'pear',
             'color' => 'yellow',
             'size'  => 'small',
             'taste' => 'sweet',
@@ -83,7 +71,7 @@ class fruit
             'smell' => 'sweet'
         ],
         [
-            'name'  => 'banana 香蕉',
+            'name'  => 'banana',
             'color' => 'yellow',
             'size'  => 'small',
             'taste' => 'sweet',
@@ -91,7 +79,7 @@ class fruit
             'smell' => 'sweet'
         ],
         [
-            'name'  => 'watermelon 西瓜',
+            'name'  => 'watermelon',
             'color' => 'green',
             'size'  => 'big',
             'taste' => 'sweet',
@@ -99,7 +87,7 @@ class fruit
             'smell' => 'none'
         ],
         [
-            'name'  => 'mango 芒果',
+            'name'  => 'mango',
             'color' => 'yellow',
             'size'  => 'small',
             'taste' => 'sweet',
@@ -107,7 +95,7 @@ class fruit
             'smell' => 'sweet'
         ],
         [
-            'name'  => 'orange 桔子',
+            'name'  => 'orange',
             'color' => 'yellow',
             'size'  => 'small',
             'taste' => 'acidity',
@@ -115,7 +103,7 @@ class fruit
             'smell' => 'acidity'
         ],
         [
-            'name'  => 'pineapple 菠萝',
+            'name'  => 'pineapple',
             'color' => 'yellow',
             'size'  => 'medium',
             'taste' => 'acidity',
@@ -123,7 +111,7 @@ class fruit
             'smell' => 'acidity'
         ],
         [
-            'name'  => 'tomato 西红柿',
+            'name'  => 'tomato',
             'color' => 'red',
             'size'  => 'small',
             'taste' => 'acidity',
@@ -131,7 +119,7 @@ class fruit
             'smell' => 'none'
         ],
         [
-            'name'  => 'grape 葡萄',
+            'name'  => 'grape',
             'color' => 'purple',
             'size'  => 'tiny',
             'taste' => 'sweet',
@@ -139,7 +127,7 @@ class fruit
             'smell' => 'none'
         ],
         [
-            'name'  => 'avocado 牛油果',
+            'name'  => 'avocado',
             'color' => 'green',
             'size'  => 'small',
             'taste' => 'none',
@@ -153,7 +141,7 @@ class fruit
     private static $fruits = [];
 
     /**
-     * Make an API Safe Zone for api calling
+     * Make an API Safe Key for api calling
      *
      * The content format is "method name" => ["required_data_name_1", "required_data_name_2", "required_data_name_3", ...]
      * If a method need no required data, leave an empty array there like "method name" => [], or, it'll be ignored by api
@@ -189,6 +177,8 @@ class fruit
     {
         //We actually know the format we need, so, do it
         //Make a copy of original data
+
+        $name = '';
         $raw_data = self::fruits;
 
         //Go over the list deeply
