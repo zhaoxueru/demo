@@ -12,22 +12,22 @@
  * 1. Turn ENABLE_GET to true for better controlling via url GET. You can use POST also and don't need to turn it to true.
  * Go to your server via the example url bellow: (Remember the change host_address to your own ip/host)
  *
- * 2. Visit http://host_address/api.php?cmd=demo/fruit/picker&color=yellow&smell=sweet
- * 3. Visit http://host_address/api.php?cmd=demo/fruit/picker&color=yellow&smell=sweet&shape=pear
+ * 2. Visit http://host_address/api.php?cmd=demo/fruit&color=yellow&smell=sweet
+ * 3. Visit http://host_address/api.php?cmd=demo/fruit&color=yellow&smell=sweet&shape=pear
  *
  * 4. Get the differences
  *
  * The demo url is in loose style, which means all data-structure matched methods will be calling
  * If you want to try strict style, visit the example urls bellow with GET enabled: (Remember the change host_address to your own ip/host)
  *
- * http://host_address/api.php?cmd=demo/fruit/picker-color-smell-guess&color=yellow&smell=sweet
- * http://host_address/api.php?cmd=demo/fruit/picker-color-smell-shape-guess&color=yellow&smell=sweet&shape=pear
+ * http://host_address/api.php?cmd=demo/fruit-color-smell-guess&color=yellow&smell=sweet
+ * http://host_address/api.php?cmd=demo/fruit-color-smell-shape-guess&color=yellow&smell=sweet&shape=pear
  *
  * In CLI mode, you can input as follows:
  *
- * php api.php -r result -c "demo/fruit/picker" -d "color=yellow&smell=sweet&shape=pear"
- * php api.php -r result -l -c "demo/fruit/picker" -d "color=yellow&smell=sweet&shape=pear"
- * php api.php -r result -l -c "demo/fruit/picker-color-smell-shape-guess" -d "color=yellow&smell=sweet&shape=pear"
+ * php api.php -r result -c "demo/fruit" -d "color=yellow&smell=sweet&shape=pear"
+ * php api.php -r result -l -c "demo/fruit" -d "color=yellow&smell=sweet&shape=pear"
+ * php api.php -r result -l -c "demo/fruit-color-smell-shape-guess" -d "color=yellow&smell=sweet&shape=pear"
  *
  * or, any kind of these. Just see the comment in /core/ctr/router/cli.php, begin from line 72 to 82
  *
@@ -37,12 +37,12 @@
 
 //This is a Namespace demo example
 
-namespace demo\fruit;
+namespace demo;
 
 use \core\ctr\router as router;
 
 //The class name should be exactly the same as the file name
-class picker
+class fruit
 {
     /**
      * I declare a list of fruits with some properties using const,

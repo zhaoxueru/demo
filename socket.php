@@ -6,11 +6,11 @@
  * Please view comments in every method
  */
 
-namespace demo\socket;
+namespace demo;
 
 use \ext\sock as sock;
 
-class server
+class socket
 {
     /**
      * API Safe Key
@@ -21,13 +21,13 @@ class server
         'tcp_server'  => [],
         'udp_server'  => [],
         'http_server' => [],
-        'tcp_send'    => [],
-        'udp_send'    => []
+        'tcp_sender'  => [],
+        'udp_sender'  => []
     ];
 
     /**
      * TCP Server
-     * run with cmd: "php api.php demo/socket/server-tcp_server"
+     * run with cmd: "php api.php demo/socket-tcp_server"
      */
     public static function tcp_server(): void
     {
@@ -87,7 +87,7 @@ class server
 
     /**
      * UDP Server
-     * run with cmd: "php api.php demo/socket/server-udp_server"
+     * run with cmd: "php api.php demo/socket-udp_server"
      */
     public static function udp_server(): void
     {
@@ -115,7 +115,7 @@ class server
 
     /**
      * HTTP Server
-     * run with cmd: "php api.php demo/socket/server-http_server"
+     * run with cmd: "php api.php demo/socket-http_server"
      */
     public static function http_server(): void
     {
@@ -162,9 +162,9 @@ class server
 
     /**
      * TCP Sender
-     * run with cmd: "php api.php demo/socket/server-tcp_send"
+     * run with cmd: "php api.php demo/socket-tcp_sender"
      */
-    public static function tcp_send(): void
+    public static function tcp_sender(): void
     {
         //Set TCP server host address and port
         sock::$host = '127.0.0.1';
@@ -206,9 +206,9 @@ class server
 
     /**
      * UDP Sender
-     * run with cmd: "php api.php demo/socket/server-udp_send"
+     * run with cmd: "php api.php demo/socket-udp_sender"
      */
-    public static function udp_send(): void
+    public static function udp_sender(): void
     {
         //Set UDP server host address and port
         sock::$host = '127.0.0.1';
