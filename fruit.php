@@ -9,7 +9,7 @@
  *
  * USAGE
  *
- * 1. Turn ENABLE_GET to true for better controlling via url GET. You can use POST also and don't need to turn it to true.
+ * 1. Enable "DEBUG" in cfg.php for better showing in debug mode
  * Go to your server via the example url bellow: (Remember the change host_address to your own ip/host)
  *
  * 2. Visit http://host_address/api.php?cmd=demo/fruit&color=yellow&smell=sweet
@@ -30,6 +30,7 @@
  * php api.php -r result -l -c "demo/fruit-color-smell-shape-guess" -d "color=yellow&smell=sweet&shape=pear"
  *
  * or, any kind of these. Just see the comment in /core/ctr/router/cli.php, begin from line 72 to 82
+ * for example: "c" can be written in "cmd", "d" can be "data", and more.
  *
  * You can also modified the original data and the request url, whatever. Do it as your own.
  * You can link the module to your database or other modules to finish huge project as also.
