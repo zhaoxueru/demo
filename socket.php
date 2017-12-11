@@ -176,7 +176,7 @@ class socket
         //Create Socket (sender)
         $ok = sock::create();
 
-        if (!$ok) exit('UDP Sender creation failed!');
+        if (!$ok) exit('TCP Sender creation failed!');
 
         //Data need to send
         //If no "host" and "sock" were set,
