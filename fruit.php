@@ -40,7 +40,7 @@
 
 namespace demo;
 
-use \core\ctr\router as router;
+use core\ctr\router;
 
 //The class name should be exactly the same as the file name
 class fruit

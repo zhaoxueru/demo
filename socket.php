@@ -8,7 +8,7 @@
 
 namespace demo;
 
-use \ext\sock as sock;
+use ext\sock;
 
 class socket
 {
