@@ -123,9 +123,9 @@ class play
 
             if (empty($list)) continue;
 
-            if (1 < count($list)){
+            if (1 < count($list) || 'OK! ' !== substr($list[0], 0, 4)) {
                 echo PHP_EOL . 'Wow, you have messages unread!' . PHP_EOL;
-                echo PHP_EOL . '↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓' . PHP_EOL;
+                echo PHP_EOL . '↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓' . PHP_EOL . PHP_EOL;
             }
 
             foreach ($list as $cmd) {
