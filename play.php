@@ -58,22 +58,12 @@ class play
             var_dump($msg);
 
             $data = [];
-            $connected = array_keys($msg);
 
             //example: from message and send back to client
-            foreach ($msg as $key => $value) {
-                foreach ($connected as $c) {
-                    if ($key !== $c) {
-                        //Regroup data
-                        $data[$key]['sock'] = $client[$key];
-                        //Message to be sent
-                        $data[$key]['msg'] = $value['msg'];
-                    } else {
-                        //Regroup data
-                        $data[$key]['sock'] = $client[$key];
-                        //Message to be sent
-                        $data[$key]['msg'] = 'OK! ' . count($connected) . ' players are online waiting!';
-                    }
+            foreach ($client as $k => $v) {
+                foreach ($msg as $key => $value) {
+                    $data[$k]['sock'] = $v;
+                    $data[$k]['msg'] = $key !== $k ? $value['msg'] : 'OK! ' . count($client) . ' players are online waiting!';
                 }
             }
 
@@ -104,19 +94,20 @@ class play
         if (!$ok) exit('TCP Sender creation failed!');
 
         do {
-            //Data need to send
-            //If no "host" and "sock" were set,
-            //it'll be set to the sender itself
             $data = [];
 
             echo 'Please input your commands, we will send it to others: ';
 
-            $data[] = ['msg' => fgets(STDIN)];
+            $msg = fgets(STDIN);
+
+            $data[] = ['msg' => $msg];
 
             //Send data to Server
             $result = sock::write($data);
 
-            var_dump($result);
+            echo PHP_EOL . '============================================' . PHP_EOL;
+            echo $result[0] ? 'Message: "' . trim($msg) . '" sent successfully!' : 'Send failed!';
+            echo PHP_EOL . '============================================' . PHP_EOL;
 
             //Listen to TCP port
             sock::listen();
@@ -124,17 +115,41 @@ class play
             //Read data from server
             $msg = sock::read();
 
-            var_dump($msg);
+            $received = current($msg)['msg'];
 
-            if ('OK! ' === substr(current($msg)['msg'], 0, 4)) continue;
+            $list = false !== strpos($received, PHP_EOL) ? explode(PHP_EOL, $received) : [$received];
 
-            echo 'Receive and run the msg? (y/n): ';
+            $list = array_filter($list);
 
-            $input = fgets(STDIN);
+            if (empty($list)) continue;
 
-            if ('y' === strtolower(trim($input))) {
-                exec(current($msg)['msg'], $out);
-                var_dump($out);
+            echo PHP_EOL . 'Wow, you have messages unread!' . PHP_EOL;
+            echo PHP_EOL . '↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓' . PHP_EOL;
+
+            foreach ($list as $cmd) {
+                $cmd = trim($cmd);
+
+                if ('OK! ' === substr($cmd, 0, 4)) {
+                    echo PHP_EOL . $cmd . PHP_EOL . PHP_EOL;
+                    continue;
+                }
+
+                echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' . PHP_EOL;
+                echo $cmd . PHP_EOL;
+                echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' . PHP_EOL . PHP_EOL;
+                echo '!!!Do NOT execute the command that you don\'t know!!!' . PHP_EOL;
+                echo 'Execute the messages? (y/n): ';
+                echo PHP_EOL . PHP_EOL;
+
+                $input = fgets(STDIN);
+
+                if ('y' === strtolower(trim($input))) {
+                    exec($cmd, $out);
+                    echo 'Executed. The command shows:' . PHP_EOL;
+                    echo '============================================' . PHP_EOL;
+                    var_dump($out);
+                    echo '============================================' . PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL;
+                }
             }
         } while (true);
     }
