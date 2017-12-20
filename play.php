@@ -72,7 +72,7 @@ class play
                         //Regroup data
                         $data[$key]['sock'] = $client[$key];
                         //Message to be sent
-                        $data[$key]['msg'] = 'OK! ' . count($connected) . ' are online waiting!';
+                        $data[$key]['msg'] = 'OK! ' . count($connected) . ' players are online waiting!';
                     }
                 }
             }
