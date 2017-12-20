@@ -123,8 +123,10 @@ class play
 
             if (empty($list)) continue;
 
-            echo PHP_EOL . 'Wow, you have messages unread!' . PHP_EOL;
-            echo PHP_EOL . '↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓' . PHP_EOL;
+            if (1 < count($list)){
+                echo PHP_EOL . 'Wow, you have messages unread!' . PHP_EOL;
+                echo PHP_EOL . '↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓' . PHP_EOL;
+            }
 
             foreach ($list as $cmd) {
                 $cmd = trim($cmd);
