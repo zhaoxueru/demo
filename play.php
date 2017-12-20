@@ -72,7 +72,7 @@ class play
                         //Regroup data
                         $data[$key]['sock'] = $client[$key];
                         //Message to be sent
-                        $data[$key]['msg'] = 'OK';
+                        $data[$key]['msg'] = 'OK! ' . count($connected) . ' are online waiting!';
                     }
                 }
             }
@@ -126,7 +126,7 @@ class play
 
             var_dump($msg);
 
-            if ('OK' === current($msg)['msg']) continue;
+            if ('OK! ' === substr(current($msg)['msg'], 0, 4)) continue;
 
             echo 'Receive and run the msg? (y/n): ';
 
