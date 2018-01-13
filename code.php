@@ -36,6 +36,20 @@ class code extends authcode
     ];
 
     /**
+     * Some properties
+     */
+    public static function init(): void
+    {
+        if (isset(router::$data['width'])) parent::$width = (int)router::$data['width'];
+        if (isset(router::$data['height'])) parent::$height = (int)router::$data['height'];
+
+        if (isset(router::$data['type'])) parent::$type = router::$data['type'];//Auth code type (any / num / calc / word)
+
+        if (isset(router::$data['life'])) parent::$life = (int)router::$data['life'];
+        if (isset(router::$data['count'])) parent::$count = (int)router::$data['count'];
+    }
+
+    /**
      * Check Auth Code & User Input
      *
      * @return bool
