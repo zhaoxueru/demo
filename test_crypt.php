@@ -25,7 +25,7 @@
 
 namespace demo;
 
-use \ext\keygen, \ext\crypt;
+use \ext\crypt;
 
 class test_crypt
 {
@@ -40,7 +40,7 @@ class test_crypt
         //Absolute path of "openssl.cnf" on your hard drive
         //crypt::$ssl_cnf = 'Your SSL Config file path ("openssl.cnf") / 你本地的 OpenSSL 配置文件 "openssl.cnf" 路径';
 
-        $key = keygen::create();
+        $key = forward_static_call([crypt::$keygen, 'create']);
         var_dump($key);
         echo PHP_EOL;
 
