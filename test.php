@@ -33,15 +33,9 @@ class test
         'crypt' => []
     ];
 
-    private static function chk_string(string $name, array $data): void
+    private static function chk_equal(string $name, array $data): void
     {
-        echo $name . ': ' . ($data[0] === $data[1] ? 'PASSED!' : 'Failed! ' . $data[0] . ' !== ' . $data[1]);
-        echo PHP_EOL;
-    }
-
-    private static function chk_bool(string $name, bool $data): void
-    {
-        echo $name . ': ' . ($data ? 'PASSED!' : 'Failed!');
+        echo $name . ': ' . ($data[0] === $data[1] ? 'PASSED!' : 'Failed! ' . (string)$data[0] . ' !== ' . (string)$data[1]);
         echo PHP_EOL;
     }
 
@@ -61,34 +55,34 @@ class test
 
         $enc = crypt::encrypt($string, $aes_key);
         $dec = crypt::decrypt($enc, $aes_key);
-        self::chk_string('encrypt/decrypt', [$string, $dec]);
+        self::chk_equal('encrypt/decrypt', [$string, $dec]);
 
 
         $rsa_key = crypt::rsa_keys();
 
         $enc = crypt::rsa_encrypt($string, $rsa_key['public']);
         $dec = crypt::rsa_decrypt($enc, $rsa_key['private']);
-        self::chk_string('rsa_encrypt(pub)/rsa_decrypt(pri)', [$string, $dec]);
+        self::chk_equal('rsa_encrypt(pub)/rsa_decrypt(pri)', [$string, $dec]);
 
         $enc = crypt::rsa_encrypt($string, $rsa_key['private']);
         $dec = crypt::rsa_decrypt($enc, $rsa_key['public']);
-        self::chk_string('rsa_encrypt(pri)/rsa_decrypt(pub)', [$string, $dec]);
+        self::chk_equal('rsa_encrypt(pri)/rsa_decrypt(pub)', [$string, $dec]);
 
 
         $enc = crypt::sign($string);
         $dec = crypt::verify($enc);
-        self::chk_string('sign/verify', [$string, $dec]);
+        self::chk_equal('sign/verify', [$string, $dec]);
 
         $enc = crypt::sign($string, $rsa_key['public']);
         $dec = crypt::verify($enc, $rsa_key['private']);
-        self::chk_string('sign(pub)/verify(pri)', [$string, $dec]);
+        self::chk_equal('sign(pub)/verify(pri)', [$string, $dec]);
 
         $enc = crypt::sign($string, $rsa_key['private']);
         $dec = crypt::verify($enc, $rsa_key['public']);
-        self::chk_string('sign(pri)/verify(pub)', [$string, $dec]);
+        self::chk_equal('sign(pri)/verify(pub)', [$string, $dec]);
 
         $hash = crypt::hash_pwd($string, $aes_key);
         $pwd_chk = crypt::check_pwd($string, $aes_key, $hash);
-        self::chk_bool('hash_pwd/check_pwd', $pwd_chk);
+        self::chk_equal('hash_pwd/check_pwd', [$pwd_chk, true]);
     }
 }
