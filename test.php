@@ -183,7 +183,7 @@ class test
         echo 'Main process started? (y/n):';
         $input = trim(fgets(STDIN));
 
-        if ('n' === strtolower($input)) {
+        if ('' === $input || 'n' === strtolower($input)) {
             echo PHP_EOL;
             echo 'Main process NOT started. Test now exits!';
             return;
