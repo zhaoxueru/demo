@@ -228,8 +228,8 @@ class test
         for ($i = 0; $i < $jobs; ++$i) redis_queue::add('test', ['cmd' => &$cmd, 'value' => true]);
 
         do {
-            sleep(redis_queue::$idle_wait);
             if ($jobs < $left) $left = $jobs;
+            sleep(redis_queue::$idle_wait * 2);
             $jobs = array_sum(redis_queue::queue_list());
         } while (0 < $jobs && $left > $jobs);
 
