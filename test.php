@@ -26,17 +26,22 @@
 namespace demo;
 
 use \ext\crypt;
+use ext\mpc;
 use \ext\redis_queue;
 use \core\ctr\router;
 
 class test
 {
     public static $key = [
-        'crypt'       => [],
+        'crypt' => [],
+
         'queue_start' => ['run'],
         'queue_test'  => ['value'],
         'queue_run'   => [],
-        'queue'       => []
+        'queue'       => [],
+
+        'mpc'      => [],
+        'mpc_test' => ['mpc_value']
     ];
 
     /**
@@ -45,7 +50,7 @@ class test
      * @param string $name
      * @param array  $data
      */
-    private static function chk_equal(string $name, array $data): void
+    private static function chk_eq(string $name, array $data): void
     {
         echo $name . ': ' . ($data[0] === $data[1] ? 'PASSED!' : 'Failed! ' . (string)$data[0] . ' !== ' . (string)$data[1]);
         echo PHP_EOL;
@@ -95,39 +100,39 @@ class test
 
         $enc = crypt::encrypt($string, $aes_key);
         $dec = crypt::decrypt($enc, $aes_key);
-        self::chk_equal('encrypt/decrypt', [$string, $dec]);
+        self::chk_eq('encrypt/decrypt', [$string, $dec]);
 
 
         $rsa_key = crypt::rsa_keys();
 
         $enc = crypt::rsa_encrypt($string, $rsa_key['public']);
         $dec = crypt::rsa_decrypt($enc, $rsa_key['private']);
-        self::chk_equal('rsa_encrypt(pub)/rsa_decrypt(pri)', [$string, $dec]);
+        self::chk_eq('rsa_encrypt(pub)/rsa_decrypt(pri)', [$string, $dec]);
 
 
         $enc = crypt::rsa_encrypt($string, $rsa_key['private']);
         $dec = crypt::rsa_decrypt($enc, $rsa_key['public']);
-        self::chk_equal('rsa_encrypt(pri)/rsa_decrypt(pub)', [$string, $dec]);
+        self::chk_eq('rsa_encrypt(pri)/rsa_decrypt(pub)', [$string, $dec]);
 
 
         $enc = crypt::sign($string);
         $dec = crypt::verify($enc);
-        self::chk_equal('sign/verify', [$string, $dec]);
+        self::chk_eq('sign/verify', [$string, $dec]);
 
 
         $enc = crypt::sign($string, $rsa_key['public']);
         $dec = crypt::verify($enc, $rsa_key['private']);
-        self::chk_equal('sign(pub)/verify(pri)', [$string, $dec]);
+        self::chk_eq('sign(pub)/verify(pri)', [$string, $dec]);
 
 
         $enc = crypt::sign($string, $rsa_key['private']);
         $dec = crypt::verify($enc, $rsa_key['public']);
-        self::chk_equal('sign(pri)/verify(pub)', [$string, $dec]);
+        self::chk_eq('sign(pri)/verify(pub)', [$string, $dec]);
 
 
         $hash = crypt::hash_pwd($string, $aes_key);
         $pwd_chk = crypt::check_pwd($string, $aes_key, $hash);
-        self::chk_equal('hash_pwd/check_pwd', [$pwd_chk, true]);
+        self::chk_eq('hash_pwd/check_pwd', [$pwd_chk, true]);
     }
 
     /**
@@ -189,7 +194,7 @@ class test
             return;
         }
 
-        $cmd = str_replace('\\', '/', __CLASS__ . '-queue_test');
+        $cmd = strtr(__CLASS__, '\\', '/') . '-queue_test';
 
 
         $add = redis_queue::add('test', ['cmd' => &$cmd, 'value' => true]);
@@ -198,7 +203,7 @@ class test
         sleep(redis_queue::$idle_wait);
 
         $jobs = redis_queue::queue_list();
-        self::chk_equal('Queue Process', [array_sum($jobs), 0]);
+        self::chk_eq('Queue Process', [array_sum($jobs), 0]);
 
 
         $fail_rec = redis_queue::fail_list(0, 1)['len'];
@@ -209,7 +214,7 @@ class test
 
         $fail_now = redis_queue::fail_list(0, 1)['len'];
 
-        self::chk_equal('Queue fail check', [$fail_now - $fail_rec, 1]);
+        self::chk_eq('Queue fail check', [$fail_now - $fail_rec, 1]);
 
 
         $left = $jobs = 200;
@@ -221,7 +226,7 @@ class test
             $jobs = array_sum(redis_queue::queue_list());
         } while (0 < $jobs && $left > $jobs);
 
-        self::chk_equal('Queue (200 jobs)', [$jobs, 0]);
+        self::chk_eq('Queue (200 jobs)', [$jobs, 0]);
 
 
         $left = $jobs = 1000;
@@ -233,6 +238,173 @@ class test
             $jobs = array_sum(redis_queue::queue_list());
         } while (0 < $jobs && $left > $jobs);
 
-        self::chk_equal('Queue (1000 jobs)', [$jobs, 0]);
+        self::chk_eq('Queue (1000 jobs)', [$jobs, 0]);
+    }
+
+    /**
+     * mpc Test
+     */
+    public static function mpc(): void
+    {
+        echo 'MPC Test Starts:';
+        echo PHP_EOL;
+        echo 'Make sure to configured the "cfg.ini" if needed!';
+        echo PHP_EOL;
+        echo PHP_EOL;
+
+        $cmd = strtr(__CLASS__, '\\', '/') . '-mpc_test';
+
+        $val = 'mpc_test';
+
+        $int_val = 1800000;
+
+
+        $time = microtime(true);
+        mpc::begin();
+        mpc::add($cmd, ['mpc_value' => $val]);
+        $result = mpc::commit();
+        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo PHP_EOL;
+        self::chk_eq('MPC (1 job)', [$result[0]['data'], $val]);
+        echo PHP_EOL;
+
+
+        $time = microtime(true);
+        mpc::begin();
+
+        $data = [];
+        for ($i = 0; $i < 10; ++$i) {
+            $data[$i] = 'test_' . $i;
+            mpc::add($cmd, ['mpc_value' => $data[$i]]);
+        }
+
+        $result = mpc::commit();
+        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo PHP_EOL;
+
+        $pass = true;
+        foreach ($data as $key => $value) {
+            if (!isset($result[$key]) || $result[$key]['data'] !== $value) {
+                $pass = false;
+                break;
+            }
+        }
+
+        self::chk_eq('MPC (10 jobs)', [$pass, true]);
+        echo PHP_EOL;
+
+
+        $time = microtime(true);
+        mpc::begin();
+
+        $data = [];
+        for ($i = 0; $i < 20; ++$i) {
+            $data[$i] = 'test_' . $i;
+            mpc::add($cmd, ['mpc_value' => $data[$i]]);
+        }
+
+        $result = mpc::commit();
+        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo PHP_EOL;
+
+        $pass = true;
+        foreach ($data as $key => $value) {
+            if (!isset($result[$key]) || $result[$key]['data'] !== $value) {
+                $pass = false;
+                break;
+            }
+        }
+
+        self::chk_eq('MPC (20 jobs)', [$pass, true]);
+        echo PHP_EOL;
+
+
+        $time = microtime(true);
+        mpc::begin();
+
+        $data = [];
+        for ($i = 0; $i < 100; ++$i) {
+            $data[$i] = 'test_' . $i;
+            mpc::add($cmd, ['mpc_value' => $data[$i]]);
+        }
+
+        $result = mpc::commit();
+        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo PHP_EOL;
+
+        $pass = true;
+        foreach ($data as $key => $value) {
+            if (!isset($result[$key]) || $result[$key]['data'] !== $value) {
+                $pass = false;
+                break;
+            }
+        }
+
+        self::chk_eq('MPC (100 jobs)', [$pass, true]);
+        echo PHP_EOL;
+
+
+        mpc::$process_time = 1000000;
+
+
+        $time = microtime(true);
+        mpc::begin();
+
+        $data = [];
+        for ($i = 1; $i <= 20; ++$i) {
+            $data[] = $int_val;
+            mpc::add($cmd, ['mpc_value' => $int_val]);
+        }
+
+        $result = mpc::commit();
+        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo PHP_EOL;
+
+        $pass = true;
+        foreach ($data as $key => $value) {
+            if (!isset($result[$key]) || $result[$key]['data'] !== $value) {
+                $pass = false;
+                break;
+            }
+        }
+
+        self::chk_eq('MPC (20 sleep jobs: sleep for 1.8s * 20 = 36s)', [$pass, true]);
+        echo PHP_EOL;
+
+
+        $time = microtime(true);
+        mpc::begin();
+
+        $data = [];
+        for ($i = 1; $i <= 100; ++$i) {
+            $data[] = $int_val;
+            mpc::add($cmd, ['mpc_value' => $int_val]);
+        }
+
+        $result = mpc::commit();
+        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo PHP_EOL;
+
+        $pass = true;
+        foreach ($data as $key => $value) {
+            if (!isset($result[$key]) || $result[$key]['data'] !== $value) {
+                $pass = false;
+                break;
+            }
+        }
+
+        self::chk_eq('MPC (100 sleep jobs: sleep for 1.8s * 100 = 180s)', [$pass, true]);
+        echo PHP_EOL;
+    }
+
+    /**
+     * mpc callable function for test
+     *
+     * @return string
+     */
+    public static function mpc_test(): string
+    {
+        if (is_int(router::$data['mpc_value'])) usleep(router::$data['mpc_value']);
+        return router::$data['mpc_value'];
     }
 }
