@@ -344,9 +344,6 @@ class test
         echo PHP_EOL;
 
 
-        mpc::$process_time = 1000000;
-
-
         $time = microtime(true);
         mpc::begin();
 
