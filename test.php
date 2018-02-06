@@ -263,7 +263,7 @@ class test
         mpc::begin();
         mpc::add($cmd, ['mpc_value' => $val]);
         $result = mpc::commit();
-        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo 'Time Taken:' . round(microtime(true) - $time, 4) . 's';
         echo PHP_EOL;
         self::chk_eq('MPC (1 job)', [$result[0]['data'], $val]);
         echo PHP_EOL;
@@ -279,7 +279,7 @@ class test
         }
 
         $result = mpc::commit();
-        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo 'Time Taken:' . round(microtime(true) - $time, 4) . 's';
         echo PHP_EOL;
 
         $pass = true;
@@ -304,7 +304,7 @@ class test
         }
 
         $result = mpc::commit();
-        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo 'Time Taken:' . round(microtime(true) - $time, 4) . 's';
         echo PHP_EOL;
 
         $pass = true;
@@ -329,7 +329,7 @@ class test
         }
 
         $result = mpc::commit();
-        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo 'Time Taken:' . round(microtime(true) - $time, 4) . 's';
         echo PHP_EOL;
 
         $pass = true;
@@ -354,7 +354,7 @@ class test
         }
 
         $result = mpc::commit();
-        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo 'Time Taken:' . round(microtime(true) - $time, 4) . 's';
         echo PHP_EOL;
 
         $pass = true;
@@ -379,7 +379,7 @@ class test
         }
 
         $result = mpc::commit();
-        echo 'Time: ' . round(microtime(true) - $time, 4) . 's';
+        echo 'Time Taken:' . round(microtime(true) - $time, 4) . 's';
         echo PHP_EOL;
 
         $pass = true;
